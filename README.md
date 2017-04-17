@@ -90,7 +90,33 @@ Tein templates kansioon tiedoston index.html.erb, joka toimii mallina käyttäj�
     
 Kirjoitin opettajan [mallin](https://github.com/terokarvinen/nukke) mukaan tiedostot start.sh ja apply.sh kansioon /home/xubuntu/virtualhost
 
+Seuraavaksi tein kansioon manifests tiedoston inip.pp, josta useamman pienen kirjoitusvirheen kautta tuli seuraavanlainen:
 
+        class virtualhost {
+        package { 'apache2':
+                ensure => 'installed',
+                allowcdrom => 'true',
+        }
+        file { '/etc/apache2/sites-available/janipoutaorg.conf':
+                content => template('virtualhost/janipoutaorg.conf.erb'),
+                notify => Service['apache2'],
+        }
+        file { '/etc/hosts':
+                content => template('virtualhost/hosts.erb'),
+                notify => Service['apache2'],
+        }
+        file { '/home/xubuntu/public_html':
+                ensure => 'directory',
+        }
+        }
+
+Nämä kaikki kansiot ja tiedostot tallensin vähitellen Gittiin. Kun olin valmis ajoin modulin kopioimalla start.sh tiedoston raw-version.
+Kaikkien kirjoitusvirheiden ja polkujen muutosten jälkeen ei tullut enää virheilmoituksia ja pääsin testaamaan modulia selaimessa.
+Näkyviin tuli Apachen testisivu. En ollut tehnyt komentoja
+
+        sudo a2ensite 000-defaul.conf && a2dissite janipoutaorg.conf
+
+Laitoin nuo uuteen moduliin, eli loin kansioon ~/modules kansion a2ensite ja siihen kansion manifests, johon tein tiedoston init.pp
 
 
 
