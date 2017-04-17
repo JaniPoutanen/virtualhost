@@ -2,8 +2,8 @@ class virtualhost {
 	package { 'apache2':
 		ensure => 'installed',
 		allowcdrom => 'true',
-	}	
-	file { '/etc/apache2/sites-available':
+	}
+	file { '/etc/apache2/sites-available/janipoutaorg.conf':
 		content => template('virtualhost/janipoutaorg.conf.erb'),
 		notify => Service['apache2'], 
 	}
