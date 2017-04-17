@@ -84,6 +84,8 @@ Samoin /etc/hosts
 
     $ sudo cp /etc/hosts hosts.erb
     
+Kirjoitin opettajan [mallin](https://github.com/terokarvinen/nukke) mukaan tiedostot start.sh ja apply.sh kansioon /home/xubuntu/virtualhost
+
 
 
 
