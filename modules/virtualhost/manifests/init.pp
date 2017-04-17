@@ -8,8 +8,8 @@ class virtualhost {
 		notify => Service['apache2'], 
 	}
 	file { 'etc/hosts':
-		content => template('virtualhost/hosts.erb),
-		notify => Service[apache2],
+		content => template('virtualhost/hosts.erb'),
+		notify => Service['apache2'],
 	}
 	file { '/home/xubuntu/public_html':
         	ensure => 'directory',
