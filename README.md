@@ -84,6 +84,10 @@ Samoin /etc/hosts
 
     $ sudo cp /etc/hosts hosts.erb
     
+Tein templates kansioon tiedoston index.html.erb, joka toimii mallina käyttäjän kotisivulle
+    
+    $ sudoedit index.html.erb
+    
 Kirjoitin opettajan [mallin](https://github.com/terokarvinen/nukke) mukaan tiedostot start.sh ja apply.sh kansioon /home/xubuntu/virtualhost
 
 
