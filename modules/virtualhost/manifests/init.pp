@@ -7,7 +7,7 @@ class virtualhost {
 		content => template('virtualhost/janipoutaorg.conf.erb'),
 		notify => Service['apache2'], 
 	}
-	file { 'etc/hosts':
+	file { '/etc/hosts':
 		content => template('virtualhost/hosts.erb'),
 		notify => Service['apache2'],
 	}
