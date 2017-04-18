@@ -25,7 +25,7 @@ Asensin Apachen
 
     $ sudo apt-get install apache2
   
-Kirjoitin tiedoston janipoutaorg.conf apachen sites-available kansioon:
+Kirjoitin tiedoston oliot.conf apachen sites-available kansioon:
 
     $ sudoedit /etc/apache2/sites-available/oliot.conf
   
@@ -37,7 +37,7 @@ Kirjoitin tiedoston janipoutaorg.conf apachen sites-available kansioon:
       </Directory>
     </VirtualHost>
   
-Otin janipoutaorg.conf käyttöön ja poistin oletus 000-default.conf käytöstä:
+Otin oliot.conf käyttöön ja poistin oletus 000-default.conf käytöstä:
 
     $ sudo a2ensite oliot.conf  
     $ sudo a2dissite 000-default.conf
