@@ -3,8 +3,8 @@ class virtualhost {
 		ensure => 'installed',
 		allowcdrom => 'true',
 	}
-	file { '/etc/apache2/sites-available/janipoutaorg.conf':
-		content => template('virtualhost/janipoutaorg.conf.erb'),
+	file { '/etc/apache2/sites-available/oliot.conf':
+		content => template('virtualhost/oliot.conf.erb'),
 		notify => Service['apache2'], 
 	}
 	file { '/etc/hosts':
