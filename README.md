@@ -27,7 +27,7 @@ Asensin Apachen
   
 Kirjoitin tiedoston janipoutaorg.conf apachen sites-available kansioon:
 
-    $ sudoedit /etc/apache2/sites-available/janipoutaorg.conf
+    $ sudoedit /etc/apache2/sites-available/oliot.conf
   
     <VirtualHost *:80>
       DocumentRoot /home/xubuntu/public_html/
@@ -39,7 +39,7 @@ Kirjoitin tiedoston janipoutaorg.conf apachen sites-available kansioon:
   
 Otin janipoutaorg.conf käyttöön ja poistin oletus 000-default.conf käytöstä:
 
-    $ sudo a2ensite janipoutaorg.conf  
+    $ sudo a2ensite oliot.conf  
     $ sudo a2dissite 000-default.conf
   
 Käynnistin palvelimen uudelleen:
@@ -56,8 +56,8 @@ Muokkasin hosts tiedostoon oikeat sivut:
 
     $ sudoedit /etc/hosts
   
-    127.0.0.1 janipouta.org
-    127.0.1.1 www.janipouta.org
+    127.0.0.1 oli.ot
+    127.0.1.1 www.oli.ot
   
 Lopputulos toimi:
 
@@ -78,7 +78,7 @@ Siirryttyäni modules kansioon tein sinne kansion virtualhost, johon tein kansio
     
 Siirryin templates kansioon ja kopioin sinne /etc/apache2/sites-available/janipoutaorg.conf tiedoston erb-päätteiseksi.
 
-    $ sudo cp /etc/apache2/sites-available/janipoutaorg.conf janipoutaorg.conf.erb
+    $ sudo cp /etc/apache2/sites-available/oliot.conf oliot.conf.erb
     
 Samoin /etc/hosts
 
@@ -93,21 +93,21 @@ Kirjoitin opettajan [mallin](https://github.com/terokarvinen/nukke) mukaan tiedo
 Seuraavaksi tein kansioon manifests tiedoston inip.pp, josta useamman pienen kirjoitusvirheen kautta tuli seuraavanlainen:
 
         class virtualhost {
-        package { 'apache2':
-                ensure => 'installed',
-                allowcdrom => 'true',
-        }
-        file { '/etc/apache2/sites-available/janipoutaorg.conf':
-                content => template('virtualhost/janipoutaorg.conf.erb'),
-                notify => Service['apache2'],
-        }
-        file { '/etc/hosts':
-                content => template('virtualhost/hosts.erb'),
-                notify => Service['apache2'],
-        }
-        file { '/home/xubuntu/public_html':
-                ensure => 'directory',
-        }
+            package { 'apache2':
+                    ensure => 'installed',
+                    allowcdrom => 'true',
+            }
+            file { '/etc/apache2/sites-available/oliot.conf':
+                    content => template('virtualhost/oliot.conf.erb'),
+                    notify => Service['apache2'],
+            }
+            file { '/etc/hosts':
+                    content => template('virtualhost/hosts.erb'),
+                    notify => Service['apache2'],
+            }
+            file { '/home/xubuntu/public_html':
+                    ensure => 'directory',
+            }
         }
 
 Nämä kaikki kansiot ja tiedostot tallensin vähitellen Gittiin. Kun olin valmis ajoin modulin kopioimalla start.sh tiedoston raw-version.
@@ -116,7 +116,48 @@ Näkyviin tuli Apachen testisivu. En ollut tehnyt komentoja
 
         sudo a2ensite 000-defaul.conf && a2dissite janipoutaorg.conf
 
-Laitoin nuo uuteen moduliin, eli loin kansioon ~/modules kansion a2ensite ja siihen kansion manifests, johon tein tiedoston init.pp
+Lisäsin oheiset komennot init.pp tiedostoon sivun https://www.puppetcookbook.com/posts/exec-a-command-in-a-manifest.html avulla. Oheiselta sivustolta selvitin aiemmin, kuinka tehdään kansio Puppetilla.
 
-
-
+        class virtualhost {
+            package { 'apache2':
+                    ensure => 'installed',
+                    allowcdrom => 'true',
+            }
+            file { '/etc/apache2/sites-available/oliot.conf':
+                    content => template('virtualhost/oliot.conf.erb'),
+                    require => Service['apache2'],
+            }
+            file { '/etc/hosts':
+                    content => template('virtualhost/hosts.erb'),
+                    require => Service['apache2'],
+            }
+            file { '/home/xubuntu/public_html':
+                    ensure => 'directory',
+            }
+            file { '/home/xubuntu/public_html/index.html':
+                    content => template('virtualhost/index.html.erb'),
+                    require => File['/home/xubuntu/public_html'],
+            }
+            service { 'apache2':
+                    ensure => 'true',
+                    enable => 'true',
+                    provider => 'systemd',
+            }
+            exec { 'a2ensite':
+                    command => 'sudo a2ensite oliot.conf',
+                    path => '/bin:/usr/bin:/sbin:/usr/sbin:',
+                    require => File['/etc/apache2/sites-available/oliot.conf'],
+            }
+            exec { 'a2dissite':
+                    command => 'sudo a2dissite 000-default.conf',
+                    path => '/bin:/usr/bin:/sbin:/usr/sbin:',
+                    notify => Service['apache2'],
+            }
+        }
+  Nyt toimi:
+  
+  ![html](oli.ot.png]
+  
+  ## Yhteenveto
+  
+Harjoitus oli oikein opettavainen, vaikka viimeinen osa jäikin tällä erää tekemättä. Suurin ongelma on syntaksin opettelelu. Yrityksen ja erehdyksen kautta pääsin siedettävään lopputulokseen. En myöskään löytänyt aikaa selvittää kuinka sivun saisi muokattavaksi kullekin käyttäjälle. Nyt toimii vain käyttäjälle xubuntu ja vain osoitteeseen oli.ot.
