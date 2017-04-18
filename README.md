@@ -156,7 +156,7 @@ Lisäsin oheiset komennot init.pp tiedostoon sivun https://www.puppetcookbook.co
         }
   Nyt toimi:
   
-  ![html](oli.ot.png]
+  ![html](/oli.ot.png]
   
   ## Yhteenveto
   
