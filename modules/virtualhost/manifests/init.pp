@@ -26,14 +26,12 @@ class virtualhost {
 	exec { 'a2ensite':
 		command => 'sudo a2ensite oliot.conf',      
                 path => '/bin:/usr/bin:/sbin:/usr/sbin:',
-		require => File['/etc/apache2/sites-available/oliot.conf'],
-		require => Service['apache2'],
+		require => File['/etc/apache2/sites-available/oliot.conf'],		
         }
 	exec { 'a2dissite':
                 command => 'sudo a2dissite 000-default.conf',
                 path => '/bin:/usr/bin:/sbin:/usr/sbin:',
-		require => File['/etc/apache2/sites-available/oliot.conf'],
-		require => Service['apache2'],
+		require => File['/etc/apache2/sites-available/oliot.conf'],		
 		notify => Service['apache2'],
 	}
 }
