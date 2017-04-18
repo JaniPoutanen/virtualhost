@@ -160,4 +160,4 @@ Lisäsin oheiset komennot init.pp tiedostoon sivun https://www.puppetcookbook.co
   
   ## Yhteenveto
   
-Harjoitus oli oikein opettavainen, vaikka viimeinen osa jäikin tällä erää tekemättä. Suurin ongelma on syntaksin opettelelu. Yrityksen ja erehdyksen kautta pääsin siedettävään lopputulokseen. En myöskään löytänyt aikaa selvittää kuinka sivun saisi muokattavaksi kullekin käyttäjälle. Nyt toimii vain käyttäjälle xubuntu ja vain osoitteeseen oli.ot.
+Harjoitus oli oikein opettavainen, vaikka viimeinen osa jäikin tällä erää tekemättä. Suurin ongelma on syntaksin opettelu. Yrityksen ja erehdyksen kautta pääsin siedettävään lopputulokseen. En myöskään löytänyt aikaa selvittää kuinka sivun saisi muokattavaksi kullekin käyttäjälle. Nyt toimii vain käyttäjälle xubuntu ja vain osoitteeseen oli.ot.
