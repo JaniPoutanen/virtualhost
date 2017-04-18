@@ -5,11 +5,11 @@ class virtualhost {
 	}
 	file { '/etc/apache2/sites-available/oliot.conf':
 		content => template('virtualhost/oliot.conf.erb'),
-		notify => Service['apache2'], 
+		require => Service['apache2'],
 	}
 	file { '/etc/hosts':
 		content => template('virtualhost/hosts.erb'),
-		notify => Service['apache2'],
+		require => Service['apache2'],
 	}
 	file { '/home/xubuntu/public_html':
         	ensure => 'directory',
@@ -22,5 +22,18 @@ class virtualhost {
 		ensure => 'true',
 		enable => 'true',
 		provider => 'systemd',
+	}
+	exec { 'a2ensite':
+		command => 'sudo a2ensite oliot.conf',      
+                path => '/bin:/usr/bin:/sbin:/usr/sbin:',
+		require => File['/etc/apache2/sites-available/oliot.conf'],
+		require => Service['apache2'],
+        }
+	exec { 'a2dissite':
+                command => 'sudo a2dissite 000-default.conf',
+                path => '/bin:/usr/bin:/sbin:/usr/sbin:',
+		require => File['/etc/apache2/sites-available/oliot.conf'],
+		require => Service['apache2'],
+		notify => Service['apache2'],
 	}
 }
